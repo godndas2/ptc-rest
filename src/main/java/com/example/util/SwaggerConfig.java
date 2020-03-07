@@ -35,9 +35,9 @@ public class SwaggerConfig {
                 "1.0",
                 "PTC backend terms of service",
                 new Contact(
-                        "Vitaliy Fedoriv",
-                        "https://github.com/spring-petclinic/spring-petclinic-rest",
-                        "test@gmail.com"),
+                        "HALF DEV",
+                        "https://github.com/godndas2/springboot-jpa-rest",
+                        "wearegang369@gmail.com"),
                 "Apache 2.0",
                 "http://www.apache.org/licenses/LICENSE-2.0", Collections.emptyList());
     }

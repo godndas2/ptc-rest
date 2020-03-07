@@ -1,6 +1,6 @@
 package com.example.rest;
 
-import com.example.model.User;
+import com.example.model.entity.User;
 import com.example.rest.response.BindingErrorsResponse;
 import com.example.service.UserService;
 import lombok.RequiredArgsConstructor;

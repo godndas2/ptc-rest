@@ -1,5 +1,6 @@
-package com.example.model;
+package com.example.model.entity;
 
+import com.example.model.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;

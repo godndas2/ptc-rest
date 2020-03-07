@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 @Configuration
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true) // Enable @PreAuthorize method-level security
-@ConditionalOnProperty(name = "ptc.security.enable", havingValue = "false")
+@ConditionalOnProperty(name = "ptc.security.enable", havingValue = "true")
 public class BasicAuthenticationConfig extends WebSecurityConfigurerAdapter {
 
     private final DataSource dataSource;

@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.example.model.common.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
