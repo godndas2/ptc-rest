@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +14,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +23,6 @@ public class OwnerRestController {
 
     private final ClinicService clinicService;
 
-    @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<Owner> addOwner(@RequestBody @Valid Owner owner,
                                           BindingResult bindingResult,
@@ -43,7 +39,6 @@ public class OwnerRestController {
         return new ResponseEntity<Owner>(owner, headers, HttpStatus.CREATED);
     }
 
-    @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
     @GetMapping(value = "", produces = "application/json")
     public ResponseEntity<Collection<Owner>> getOwners() {
         Collection<Owner> owners = this.clinicService.findAllOwners();
@@ -54,7 +49,6 @@ public class OwnerRestController {
     }
 
 
-    @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
     @GetMapping(value = "/{ownerId}", produces = "application/json")
     public ResponseEntity<Owner> getOwner(@PathVariable("ownerId") int ownerId) {
         Owner owner = null;
@@ -65,7 +59,6 @@ public class OwnerRestController {
         return new ResponseEntity<Owner>(owner, HttpStatus.OK);
     }
 
-    @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
     @GetMapping(value = "/*/lastname/{lastName}", produces = "application/json")
     public ResponseEntity<Collection<Owner>> getOwnersList(@PathVariable("lastName") String ownerLastName) {
         if (ownerLastName == null) {
@@ -78,7 +71,6 @@ public class OwnerRestController {
         return new ResponseEntity<Collection<Owner>>(owners, HttpStatus.OK);
     }
 
-    @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
     @PutMapping(value = "/{ownerId}", produces = "application/json")
     public ResponseEntity<Owner> updateOwner(@PathVariable("ownerId") int ownerId,
                                              @RequestBody @Valid Owner owner,
@@ -108,7 +100,6 @@ public class OwnerRestController {
         return new ResponseEntity<Owner>(currentOwner, HttpStatus.NO_CONTENT);
     }
 
-    @PreAuthorize( "hasRole(@roles.OWNER_ADMIN)" )
     @DeleteMapping(value = "/{ownerId}",produces = "application/json")
     @Transactional
     public ResponseEntity<Void> deleteOwner(@PathVariable("ownerId") int ownerId) {

@@ -12,6 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 import javax.sql.DataSource;
 
+import static com.example.security.Roles.ADMIN;
+import static com.example.security.Roles.OWNER_ADMIN;
+import static javafx.scene.AccessibleAttribute.ROLE;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true) // Enable @PreAuthorize method-level security
@@ -37,8 +41,11 @@ public class BasicAuthenticationConfig extends WebSecurityConfigurerAdapter {
                         "/h2-console/*")
                 .permitAll()
 
+                .antMatchers("/api/owners").hasRole(OWNER_ADMIN)
+                .antMatchers("api/users").hasRole(ADMIN)
                 .anyRequest()
                 .authenticated()
+
                 .and();
         // @formatter:on
     }

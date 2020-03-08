@@ -21,7 +21,6 @@ public class UserRestController {
 
     private final UserService userService;
 
-    @PreAuthorize("hasRole(@roles.ADMIN)") // TODO
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<User> addOwner(@RequestBody @Valid User user,
                                            BindingResult bindingResult) throws Exception {

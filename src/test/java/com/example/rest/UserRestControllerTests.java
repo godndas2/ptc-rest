@@ -64,7 +64,7 @@ public class UserRestControllerTests {
         user.setUsername("userName");
         user.setPassword("1234");
         user.setEnabled(true);
-        user.addRole("OWNER_ADMIN");
+        user.addRole("ADMIN");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String newVetAsJSON = objectMapper.writeValueAsString(user);
