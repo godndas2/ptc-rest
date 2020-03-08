@@ -44,4 +44,14 @@ public class ClinicService {
         return owner.orElseThrow(RuntimeException::new);
     }
 
+    @Transactional(readOnly = true)
+    public Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException {
+        return ownerRepository.findByLastName(lastName);
+    }
+
+    @Transactional
+    public void deleteOwner(Owner owner) throws DataAccessException {
+        ownerRepository.delete(owner);
+    }
+
 }
