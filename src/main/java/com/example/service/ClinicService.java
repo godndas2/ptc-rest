@@ -1,7 +1,9 @@
 package com.example.service;
 
 import com.example.model.entity.Owner;
+import com.example.model.entity.Pet;
 import com.example.repository.OwnerRepository;
+import com.example.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,7 +19,7 @@ import java.util.Optional;
 public class ClinicService {
 
     private final OwnerRepository ownerRepository;
-//    private final PetRepository petRepository;
+    private final PetRepository petRepository;
 //    private final VetRepository vetRepository;
 //    private final VisitRepository visitRepository;
 //    private final SpecialtyRepository specialtyRepository;
@@ -52,6 +54,17 @@ public class ClinicService {
     @Transactional
     public void deleteOwner(Owner owner) throws DataAccessException {
         ownerRepository.delete(owner);
+    }
+
+    @Transactional(readOnly = true)
+    public Pet findPetById(int id) throws DataAccessException {
+        Pet pet = null;
+        try {
+            pet = petRepository.findById(id);
+        } catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
+            return null;
+        }
+        return pet;
     }
 
 }

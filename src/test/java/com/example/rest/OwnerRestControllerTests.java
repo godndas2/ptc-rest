@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // writeValueAsString : String type 으로 convert 할 대상
 @SpringBootTest
 @WebAppConfiguration
-public class OwnerRestControllerTest {
+public class OwnerRestControllerTests {
 
     @Autowired
     private OwnerRestController ownerRestController;
