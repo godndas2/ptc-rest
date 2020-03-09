@@ -2,8 +2,10 @@ package com.example.service;
 
 import com.example.model.entity.Owner;
 import com.example.model.entity.Pet;
+import com.example.model.entity.PetType;
 import com.example.repository.OwnerRepository;
 import com.example.repository.PetRepository;
+import com.example.repository.PetTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,10 +22,10 @@ public class ClinicService {
 
     private final OwnerRepository ownerRepository;
     private final PetRepository petRepository;
+    private final PetTypeRepository petTypeRepository;
 //    private final VetRepository vetRepository;
 //    private final VisitRepository visitRepository;
 //    private final SpecialtyRepository specialtyRepository;
-//    private final PetTypeRepository petTypeRepository;
 
     @Transactional
     public void saveOwner(Owner owner) throws DataAccessException {
@@ -66,5 +68,37 @@ public class ClinicService {
         }
         return pet;
     }
+
+    @Transactional(readOnly = true)
+    public Collection<Pet> findAllPets() throws DataAccessException {
+        return petRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Collection<PetType> findPetTypes() throws DataAccessException {
+        return petRepository.findPetTypes();
+    }
+
+    @Transactional(readOnly = true)
+    public PetType findPetTypeById(int petTypeId) {
+        PetType petType = null;
+        try {
+            petType = petTypeRepository.findById(petTypeId);
+        } catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
+            return null;
+        }
+        return petType;
+    }
+
+    @Transactional
+    public void savePet(Pet pet) throws DataAccessException {
+        petRepository.save(pet);
+    }
+
+    @Transactional
+    public void deletePet(Pet pet) throws DataAccessException {
+        petRepository.delete(pet);
+    }
+
 
 }
