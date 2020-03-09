@@ -76,7 +76,8 @@ public class ClinicService {
 
     @Transactional(readOnly = true)
     public Collection<PetType> findPetTypes() throws DataAccessException {
-        return petRepository.findPetTypes();
+//        return petRepository.findPetTypes();
+        return null;
     }
 
     @Transactional(readOnly = true)

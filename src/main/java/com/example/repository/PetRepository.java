@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface PetRepository extends JpaRepository<Pet,Integer> {
     Pet findById(int id) throws DataAccessException;
-    List<PetType> findPetTypes() throws DataAccessException; // Issue
+//    List<PetType> findPetTypes() throws DataAccessException; // Issue
     void delete(Pet pet) throws DataAccessException;
 }
