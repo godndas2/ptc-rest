@@ -101,4 +101,8 @@ public class ClinicService {
     }
 
 
+    @Transactional
+    public void savePetType(PetType petType) throws DataAccessException {
+        petTypeRepository.save(petType);
+    }
 }

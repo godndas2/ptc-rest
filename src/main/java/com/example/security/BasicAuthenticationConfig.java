@@ -12,8 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 import javax.sql.DataSource;
 
-import static com.example.security.Roles.ADMIN;
-import static com.example.security.Roles.OWNER_ADMIN;
+import static com.example.security.Roles.*;
 import static javafx.scene.AccessibleAttribute.ROLE;
 
 @Configuration
@@ -41,9 +40,11 @@ public class BasicAuthenticationConfig extends WebSecurityConfigurerAdapter {
                         "/h2-console/*")
                 .permitAll()
 
-                .antMatchers("/api/owners").hasRole(OWNER_ADMIN)
-                .antMatchers("api/pets").hasRole(OWNER_ADMIN)
-                .antMatchers("api/users").hasRole(ADMIN)
+                .antMatchers("/api/owners/").hasRole(OWNER_ADMIN)
+                .antMatchers("api/pets/").hasRole(OWNER_ADMIN)
+                .antMatchers("api/users/").hasRole(ADMIN)
+                .antMatchers("api/pettypes/").hasAnyRole(OWNER_ADMIN,VET_ADMIN)
+                .antMatchers("api/pettypes/*").hasRole(VET_ADMIN) //
                 .anyRequest()
                 .authenticated()
 

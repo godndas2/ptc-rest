@@ -6,5 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PetTypeRepository extends JpaRepository<PetType, Integer> {
     PetType findById(int id) throws DataAccessException;
-
 }
