@@ -106,4 +106,14 @@ public class ClinicService {
     public void savePetType(PetType petType) throws DataAccessException {
         petTypeRepository.save(petType);
     }
+
+    @Transactional(readOnly = true)
+    public Collection<PetType> findAllPetTypes() throws DataAccessException {
+        return petTypeRepository.findAll();
+    }
+
+    @Transactional
+    public void deletePetType(PetType petType) throws DataAccessException {
+        petTypeRepository.delete(petType);
+    }
 }
