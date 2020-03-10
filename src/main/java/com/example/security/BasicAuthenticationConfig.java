@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import javax.sql.DataSource;
 
 import static com.example.security.Roles.*;
-import static javafx.scene.AccessibleAttribute.ROLE;
 
 @Configuration
 @RequiredArgsConstructor
