@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,6 +38,8 @@ public class UserRestControllerTests {
     private UserRestController userRestController;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private MockMvc mockMvc;
 
@@ -45,7 +48,7 @@ public class UserRestControllerTests {
     }
 
     @BeforeEach
-    public void initVets() {
+    public void init() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userRestController)
                 .setControllerAdvice(new ExceptionControllerAdvice())
                 .addFilter(new CharacterEncodingFilter("UTF-8"))
@@ -62,7 +65,7 @@ public class UserRestControllerTests {
     public void createUser() throws Exception {
         User user = new User();
         user.setUsername("userName");
-        user.setPassword("1234");
+        user.setPassword(passwordEncoder.encode("1234"));
         user.setEnabled(true);
         user.addRole("ADMIN");
 
