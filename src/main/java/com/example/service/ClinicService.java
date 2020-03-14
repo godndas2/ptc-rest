@@ -3,9 +3,11 @@ package com.example.service;
 import com.example.model.entity.Owner;
 import com.example.model.entity.Pet;
 import com.example.model.entity.PetType;
+import com.example.model.entity.Vet;
 import com.example.repository.OwnerRepository;
 import com.example.repository.PetRepository;
 import com.example.repository.PetTypeRepository;
+import com.example.repository.VetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,7 +25,7 @@ public class ClinicService {
     private final OwnerRepository ownerRepository;
     private final PetRepository petRepository;
     private final PetTypeRepository petTypeRepository;
-//    private final VetRepository vetRepository;
+    private final VetRepository vetRepository;
 //    private final VisitRepository visitRepository;
 //    private final SpecialtyRepository specialtyRepository;
 
@@ -115,5 +117,10 @@ public class ClinicService {
     @Transactional
     public void deletePetType(PetType petType) throws DataAccessException {
         petTypeRepository.delete(petType);
+    }
+
+    @Transactional
+    public void saveVet(Vet vet) throws DataAccessException {
+        vetRepository.save(vet);
     }
 }
