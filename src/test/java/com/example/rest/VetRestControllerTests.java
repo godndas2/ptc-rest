@@ -20,9 +20,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @WebAppConfiguration
@@ -98,5 +100,31 @@ public class VetRestControllerTests {
         .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andDo(print())
         .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(roles = "VET_ADMIN")
+    public void getAllVetsSuccess() throws Exception {
+        given(this.clinicService.getAllVets()).willReturn(vets);
+        this.mockMvc.perform(get("/api/vets/")
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andExpect(content().contentType("application/json"))
+        .andExpect(jsonPath("$.[0].id").value(1))
+        .andExpect(jsonPath("$.[0].firstName").value("James"))
+        .andExpect(jsonPath("$.[1].id").value(2))
+        .andExpect(jsonPath("$.[1].firstName").value("Helen"));
+    }
+
+    @Test
+    @WithMockUser(roles = "VET_ADMIN")
+    public void getAllVetsError() throws Exception {
+        vets.clear();
+        given(this.clinicService.getAllVets()).willReturn(vets);
+        this.mockMvc.perform(get("/api/vets/")
+        .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound());
     }
 }

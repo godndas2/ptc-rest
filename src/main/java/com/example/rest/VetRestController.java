@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.util.Collection;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,5 +37,14 @@ public class VetRestController {
         this.clinicService.saveVet(vet);
         headers.setLocation(ucBuilder.path("/api/vets/{id}").buildAndExpand(vet.getId()).toUri()); // http://localhost/api/vets/999
         return new ResponseEntity<Vet>(vet, headers, HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "", produces = "application/json")
+    public ResponseEntity<Collection<Vet>> getAllVets() {
+        Collection<Vet> allVets = this.clinicService.getAllVets();
+        if (allVets.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(allVets, HttpStatus.OK);
     }
 }

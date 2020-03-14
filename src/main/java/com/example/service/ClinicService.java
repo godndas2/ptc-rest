@@ -123,4 +123,9 @@ public class ClinicService {
     public void saveVet(Vet vet) throws DataAccessException {
         vetRepository.save(vet);
     }
+
+    @Transactional(readOnly = true)
+    public Collection<Vet> getAllVets() throws DataAccessException {
+        return vetRepository.findAll();
+    }
 }
