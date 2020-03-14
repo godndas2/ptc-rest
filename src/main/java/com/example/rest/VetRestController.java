@@ -1,12 +1,15 @@
 package com.example.rest;
 
+import com.example.model.entity.Specialty;
 import com.example.model.entity.Vet;
 import com.example.rest.response.BindingErrorsResponse;
 import com.example.service.ClinicService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -47,4 +50,51 @@ public class VetRestController {
         }
         return new ResponseEntity<>(allVets, HttpStatus.OK);
     }
+
+    // TODO Junit <BEGIN>
+    @GetMapping(value = "{vetId}", produces = "application/json")
+    public ResponseEntity<Vet> getVet(@PathVariable("vetId") int vetId) {
+        Vet vet = this.clinicService.findByVetId(vetId);
+        if (vet == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(vet, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "{vetId}", produces = "application/json")
+    public ResponseEntity<Vet> updateVet(@PathVariable("vetId") int vetId,
+                                         BindingResult bindingResult,
+                                         @RequestBody @Valid Vet vet) {
+        BindingErrorsResponse errors = new BindingErrorsResponse();
+        HttpHeaders headers = new HttpHeaders();
+        if(bindingResult.hasErrors() || (vet == null)){
+            errors.addAllErrors(bindingResult);
+            headers.add("errors", errors.toJson());
+            return new ResponseEntity<Vet>(headers, HttpStatus.BAD_REQUEST);
+        }
+        Vet currentVet = this.clinicService.findByVetId(vetId);
+        if(currentVet == null){
+            return new ResponseEntity<Vet>(HttpStatus.NOT_FOUND);
+        }
+        currentVet.setFirstName(vet.getFirstName());
+        currentVet.setLastName(vet.getLastName());
+        currentVet.clearSpecialties();
+        for (Specialty spec : vet.getSpecialties()) {
+             currentVet.addSpecialty(spec);
+        }
+        this.clinicService.saveVet(currentVet);
+        return new ResponseEntity<>(currentVet, HttpStatus.NO_CONTENT);
+    }
+
+    @Transactional
+    @DeleteMapping(value = "{vetId}", produces = "application/json")
+    public ResponseEntity<Void> deleteVet(@PathVariable("vetId") int vetId) {
+        Vet vet = this.clinicService.findByVetId(vetId);
+        if (vet == null) {
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+        this.clinicService.deleteVet(vet);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
+    // TODO <END>
 }

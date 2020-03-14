@@ -128,4 +128,19 @@ public class ClinicService {
     public Collection<Vet> getAllVets() throws DataAccessException {
         return vetRepository.findAll();
     }
+
+    public Vet findByVetId(int vetId) throws DataAccessException {
+        Optional<Vet> vet = null;
+        try {
+            vet = vetRepository.findById(vetId);
+        } catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
+            return null;
+        }
+        return vet.orElse(null); //
+    }
+
+    @Transactional
+    public void deleteVet(Vet vet) throws DataAccessException {
+        vetRepository.delete(vet);
+    }
 }
