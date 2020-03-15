@@ -56,6 +56,7 @@ public class BasicAuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("api/pettypes/").hasAnyRole(OWNER_ADMIN,VET_ADMIN)
                 .antMatchers("api/pettypes/*").hasRole(VET_ADMIN) //
                 .antMatchers("api/vets/").hasRole(VET_ADMIN)
+                .antMatchers("api/specialties/").hasRole(VET_ADMIN)
                 .anyRequest()
                 .authenticated()
 

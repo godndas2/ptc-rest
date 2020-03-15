@@ -1,13 +1,7 @@
 package com.example.service;
 
-import com.example.model.entity.Owner;
-import com.example.model.entity.Pet;
-import com.example.model.entity.PetType;
-import com.example.model.entity.Vet;
-import com.example.repository.OwnerRepository;
-import com.example.repository.PetRepository;
-import com.example.repository.PetTypeRepository;
-import com.example.repository.VetRepository;
+import com.example.model.entity.*;
+import com.example.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,8 +20,8 @@ public class ClinicService {
     private final PetRepository petRepository;
     private final PetTypeRepository petTypeRepository;
     private final VetRepository vetRepository;
+    private final SpecialtyRepository specialtyRepository;
 //    private final VisitRepository visitRepository;
-//    private final SpecialtyRepository specialtyRepository;
 
     @Transactional
     public void saveOwner(Owner owner) throws DataAccessException {
@@ -136,11 +130,38 @@ public class ClinicService {
         } catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
             return null;
         }
-        return vet.orElse(null); //
+        return vet.orElseThrow(null); //
     }
 
     @Transactional
     public void deleteVet(Vet vet) throws DataAccessException {
         vetRepository.delete(vet);
+    }
+
+    @Transactional
+    public void saveSpecialty(Specialty specialty) {
+        specialtyRepository.save(specialty);
+
+    }
+
+    @Transactional(readOnly = true)
+    public Collection<Specialty> findAllSpecialties() throws DataAccessException {
+        return specialtyRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Specialty findBySpecialtyId(int specId) throws DataAccessException {
+        Optional<Specialty> specialty = null;
+        try {
+            specialty = specialtyRepository.findById(specId);
+        } catch (ObjectRetrievalFailureException | EmptyResultDataAccessException e) {
+            return null;
+        }
+        return specialty.orElseThrow(null); //
+    }
+
+    @Transactional
+    public void deleteBySpecialtyId(Specialty specialty) throws DataAccessException {
+        specialtyRepository.delete(specialty);
     }
 }
