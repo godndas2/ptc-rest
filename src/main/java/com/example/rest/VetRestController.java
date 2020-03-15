@@ -61,7 +61,7 @@ public class VetRestController {
         return new ResponseEntity<>(vet, HttpStatus.OK);
     }
 
-    @PutMapping(value = "{vetId}", produces = "application/json")
+    @PutMapping(value = "/{vetId}", produces = "application/json")
     public ResponseEntity<Vet> updateVet(@PathVariable("vetId") int vetId,
                                          BindingResult bindingResult,
                                          @RequestBody @Valid Vet vet) {
@@ -79,11 +79,11 @@ public class VetRestController {
         currentVet.setFirstName(vet.getFirstName());
         currentVet.setLastName(vet.getLastName());
         currentVet.clearSpecialties();
-        for (Specialty spec : vet.getSpecialties()) {
-             currentVet.addSpecialty(spec);
+        for(Specialty spec : vet.getSpecialties()) {
+            currentVet.addSpecialty(spec);
         }
         this.clinicService.saveVet(currentVet);
-        return new ResponseEntity<>(currentVet, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Vet>(currentVet, HttpStatus.NO_CONTENT);
     }
 
     @Transactional
