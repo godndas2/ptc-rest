@@ -47,7 +47,9 @@ public class BasicAuthenticationConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers("/",
-                        "/h2-console/*")
+                        "/h2-console/*",
+                        "/upload/*",
+                        "/upload")
                 .permitAll()
 
                 .antMatchers("/api/owners/").hasRole(OWNER_ADMIN)
@@ -72,7 +74,8 @@ public class BasicAuthenticationConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui.html",
                 "/webjars/**",
                 "/swagger/**",
-                "/h2-console/**");
+                "/h2-console/**",
+                "/resources/**");
     }
 
     /*
