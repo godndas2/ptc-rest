@@ -23,6 +23,7 @@ public class ClinicService {
     private final SpecialtyRepository specialtyRepository;
 //    private final VisitRepository visitRepository;
 
+
     @Transactional
     public void saveOwner(Owner owner) throws DataAccessException {
         ownerRepository.save(owner);
@@ -164,4 +165,6 @@ public class ClinicService {
     public void deleteBySpecialtyId(Specialty specialty) throws DataAccessException {
         specialtyRepository.delete(specialty);
     }
+
+
 }

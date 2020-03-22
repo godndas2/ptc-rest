@@ -15,8 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.sql.DataSource;
-
 import static com.example.security.Roles.*;
 
 @Configuration
@@ -25,7 +23,6 @@ import static com.example.security.Roles.*;
 @ConditionalOnProperty(name = "ptc.security.enable", havingValue = "true")
 public class BasicAuthenticationConfig extends WebSecurityConfigurerAdapter {
 
-    private final DataSource dataSource;
     private final UserDetailsService userDetailService;
 
     @Bean
@@ -49,7 +46,9 @@ public class BasicAuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/",
                         "/h2-console/*",
                         "/upload/*",
-                        "/upload")
+                        "/multi-upload/*",
+                        "/files/*",
+                        "/download/**")
                 .permitAll()
 
                 .antMatchers("/api/owners/").hasRole(OWNER_ADMIN)

@@ -9,13 +9,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.validation.Valid;
-import javax.xml.ws.RespectBinding;
+import java.io.File;
 import java.util.Collection;
 
 @RestController
@@ -25,6 +25,7 @@ import java.util.Collection;
 public class PetRestController {
 
     private final ClinicService clinicService;
+    public static final String uploadingDir = System.getProperty("user.dir") + "/uploadingDir/";
 
     @GetMapping(value = "{petId}", produces = "application/json")
     public ResponseEntity<Pet> getPet(@PathVariable("petId") int petId) {
@@ -52,7 +53,8 @@ public class PetRestController {
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<Pet> addPet(@RequestBody @Valid Pet pet,
                                       BindingResult bindingResult,
-                                      UriComponentsBuilder ucBuilder){
+                                      UriComponentsBuilder ucBuilder,
+                                      Model model){
         BindingErrorsResponse errors = new BindingErrorsResponse();
         HttpHeaders headers = new HttpHeaders();
         if(bindingResult.hasErrors() || (pet == null)){
@@ -61,6 +63,7 @@ public class PetRestController {
             return new ResponseEntity<Pet>(headers, HttpStatus.BAD_REQUEST);
         }
         this.clinicService.savePet(pet);
+
         headers.setLocation(ucBuilder.path("/api/pets/{id}").buildAndExpand(pet.getId()).toUri());
         return new ResponseEntity<Pet>(pet, headers, HttpStatus.CREATED);
     }
