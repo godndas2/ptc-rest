@@ -14,23 +14,20 @@ public class UploadController {
     public static final String uploadingDir = System.getProperty("user.dir") + "/uploadingDir/";
 
     @GetMapping("/upload")
-    public String uploading(Model model) {
-        File file = new File(uploadingDir);
+    public String uploading(Model model) throws IOException {
+        File file = null;
+        new File(UploadController.uploadingDir).mkdirs();
+        file = new File(uploadingDir);
         model.addAttribute("files", file.listFiles());
         return "uploading";
     }
 
     @PostMapping("/upload")
     public String uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles) throws IOException {
-//        File file = null;
-//        if(!file.exists()){
-//            new File(UploadController.uploadingDir).mkdirs();
-//        }
         for(MultipartFile uploadedFile : uploadingFiles) {
             File file = new File(uploadingDir + uploadedFile.getOriginalFilename());
             uploadedFile.transferTo(file);
         }
-
         return "redirect:/";
     }
 }
